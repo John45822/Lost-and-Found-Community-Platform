@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost and Found Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading...</p>
+    </div>
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="loginForm" class="auth-form">
+                <h2>Login</h2>
+                <form id="loginFormElement">
+                    <input type="text" id="loginUsername" placeholder="Username" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+            </div>
+            <div id="signupForm" class="auth-form" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signupFormElement">
+                    <input type="text" id="signupUsername" placeholder="Username" required>
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                    <input type="text" id="fullName" placeholder="Full Name" required>
+                    <input type="text" id="location" placeholder="Location" required>
+                    <input type="tel" id="contactNumber" placeholder="Contact Number" required>
+                    <label for="idPicture">Upload Valid ID Picture:</label>
+                    <input type="file" id="idPicture" accept="image/*" required>
+                    <button type="submit">Register & Request Activation</button>
+                    <p id="activationStatus" style="margin-top: 10px; color: #666; font-size: 14px; text-align: center;"></p>
+                </form>
+                <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="mainContainer" style="display: none;">
+        <!-- Header -->
+        <header>
+            <h1>Lost and Found Platform</h1>
+            <div class="header-actions">
+                <span id="userInfo"></span>
+                <button id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-container">
+            <!-- Messages Column (Left) -->
+            <div class="column messages-column">
+                <h3>Messages</h3>
+                <div id="messagesList"></div>
+                <div class="message-compose">
+                    <select id="messageRecipient">
+                        <option value="">Select recipient...</option>
+                    </select>
+                    <textarea id="messageText" placeholder="Type your message..."></textarea>
+                    <button id="sendMessageBtn">Send</button>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Lost Items Column -->
+                <div class="column lost-column">
+                    <h3>Lost Items</h3>
+                    <div id="lostItemsList"></div>
+                </div>
+
+                <!-- Found Items Column -->
+                <div class="column found-column">
+                    <h3>Found Items</h3>
+                    <div id="foundItemsList"></div>
+                </div>
+            </div>
+
+            <!-- Notifications Column (Right) -->
+            <div class="column notifications-column">
+                <h3>Notifications</h3>
+                <div id="notificationsList"></div>
+            </div>
+
+            <!-- Admin Requests Column (Only visible for admin) -->
+            <div id="adminRequestsColumn" class="column admin-column" style="display: none;">
+                <h3>Requests</h3>
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="accountRequests">Account Activations</button>
+                    <button class="tab-btn" data-tab="postRequests">Post Requests</button>
+                    <button class="tab-btn" data-tab="manageAccounts">Manage Accounts</button>
+                </div>
+                <div id="accountRequests" class="tab-content active">
+                    <div id="accountRequestsList"></div>
+                </div>
+                <div id="postRequests" class="tab-content">
+                    <div id="postRequestsList"></div>
+                </div>
+                <div id="manageAccounts" class="tab-content">
+                    <div id="manageAccountsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Post Button -->
+        <button id="createPostBtn" class="floating-btn">
+            <span style="font-size: 20px; font-weight: bold;">+</span>
+            <span>Create Post</span>
+        </button>
+
+        <!-- Create Post Modal -->
+        <div id="createPostModal" class="modal">
+            <div class="modal-content post-modal">
+                <span class="close">&times;</span>
+                <h2>Create New Post</h2>
+                <form id="createPostForm" class="post-form">
+                    <div class="form-group">
+                        <label for="postType">Post Type <span class="required">*</span></label>
+                        <select id="postType" required>
+                            <option value="">-- Select type --</option>
+                            <option value="lost">Lost Item</option>
+                            <option value="found">Found Item</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postContent">Description <span class="required">*</span></label>
+                        <textarea id="postContent" rows="6" placeholder="Describe the item in detail...&#10;&#10;Tip: Use @username to mention other users" required></textarea>
+                        <small class="form-hint">Provide as much detail as possible to help others identify the item</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postImage">Image (Optional)</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="postImage" accept="image/*">
+                            <label for="postImage" class="file-upload-label">
+                                <span class="file-upload-icon">📷</span>
+                                <span class="file-upload-text">Choose image or drag here</span>
+                            </label>
+                        </div>
+                        <small class="form-hint">Supported formats: JPG, PNG, GIF</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancelPostBtn">Cancel</button>
+                        <button type="submit" class="btn-submit">Submit Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Post Details Modal -->
+        <div id="postDetailsModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="postDetails"></div>
+            </div>
+        </div>
+
+        <!-- Logout Confirmation Modal -->
+        <div id="logoutConfirmModal" class="modal">
+            <div class="modal-content confirm-modal">
+                <h2>Confirm Logout</h2>
+                <p>Are you sure you want to logout?</p>
+                <div class="confirm-actions">
+                    <button id="cancelLogoutBtn" class="btn-cancel">Cancel</button>
+                    <button id="confirmLogoutBtn" class="btn-confirm">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
